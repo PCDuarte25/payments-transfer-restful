@@ -38,4 +38,9 @@ class User extends Model
     {
         return $this->user_type === 'merchant';
     }
+
+    public function wallet()
+    {
+        return $this->hasOne(Funds::class);
+    }
 }
