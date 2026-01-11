@@ -28,4 +28,18 @@ class UsersController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    public function updateUser(string $id, UserRequest $request)
+    {
+        try {
+            $data = $request->validated();
+
+            $user = $this->userUseCase->updateUser($id, $data);
+
+            return response()->json($user, 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
 }
