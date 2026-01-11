@@ -11,5 +11,10 @@ class FundsRepository implements FundsRepositoryInterface
     {
         return Fund::create($data);
     }
+
+    public function deleteByUserId(string $userId): void
+    {
+        Fund::where('user_id', $userId)->delete();
+    }
 }
 

@@ -16,14 +16,21 @@ class DeleteUser
     public function execute(string $id): void
     {
         $usersRepository = $this->repositoryManager->getUsersRepository();
+        $fundsRepository = $this->repositoryManager->getFundsRepository();
 
         $user = $usersRepository->getFromId($id);
         if (!$user) {
             throw new \Exception("Usuário não encontrado.", 404);
         }
 
-        $this->repositoryManager->beginTransaction();
-        $usersRepository->delete($id);
-        $this->repositoryManager->commitTransaction();
+        try {
+            $this->repositoryManager->beginTransaction();
+            $usersRepository->delete($id);
+            $fundsRepository->deleteByUserId($id);
+            $this->repositoryManager->commitTransaction();
+        } catch (\Exception $e) {
+            $this->repositoryManager->rollbackTransaction();
+            throw new \Exception("Erro ao deletar usuário: " . $e->getMessage(), 500);
+        }
     }
 }
