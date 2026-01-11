@@ -48,7 +48,7 @@ class UsersController extends Controller
         try {
             $this->userUseCase->deleteUser($id);
 
-            return response()->json(['message' => 'User deleted successfully'], 200);
+            return response()->json(['message' => 'Usuário removido com sucesso'], 200);
         }
         catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
