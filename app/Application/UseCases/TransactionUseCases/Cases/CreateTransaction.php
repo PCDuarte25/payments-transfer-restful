@@ -4,13 +4,19 @@ namespace App\Application\UseCases\TransactionUseCases\Cases;
 
 use App\Models\User;
 use App\Persistence\Interfaces\RepositoryManagerInterface;
+use App\Services\TransactionAuthorizationService;
 
 class CreateTransaction
 {
     private RepositoryManagerInterface $repositoryManager;
+    private TransactionAuthorizationService $authorizationService;
 
-    public function __construct(RepositoryManagerInterface $repositoryManager)
+    public function __construct(
+        RepositoryManagerInterface $repositoryManager,
+        TransactionAuthorizationService $authorizationService
+    )
     {
+        $this->authorizationService = $authorizationService;
         $this->repositoryManager = $repositoryManager;
     }
 
@@ -24,6 +30,10 @@ class CreateTransaction
         $recipient = $usersRepository->getFromId($data['recipient_id']);
 
         $this->validateUsers($payer, $recipient, $data['amount']);
+
+        if (!$this->authorizationService->authorize()) {
+            throw new \Exception("Transação não autorizada pelo serviço externo.", 403);
+        }
 
         try {
             $this->repositoryManager->beginTransaction();
