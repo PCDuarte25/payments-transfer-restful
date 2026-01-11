@@ -5,6 +5,8 @@ services:
     build: .
     ports:
       - "9000:80"
+    volumes:
+      - .:/usr/share/nginx
     networks:
       - laravel
     depends_on:
