@@ -17,9 +17,21 @@ class UsersRepository implements UsersRepositoryInterface
         return User::where('email', $email)->first();
     }
 
+    public function getFromId(string $id): ?User
+    {
+        return User::where('id', $id)->first();
+    }
+
     public function create(array $data): ?User
     {
         return User::create($data);
+    }
+
+    public function update(User $user, array $data): ?User
+    {
+        $user->fill($data);
+        $user->save();
+        return $user;
     }
 }
 
