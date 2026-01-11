@@ -17,13 +17,15 @@ class UsersController extends Controller
 
     public function createNewUser(UserRequest $request)
     {
-        $data = $request->validated();
+        try {
+            $data = $request->validated();
 
-        $user = $this->userUseCase->createUser($data);
+            $user = $this->userUseCase->createUser($data);
 
-        $data = [
-            'teste' => 'teste',
-        ];
-        return response()->json($data, 200);
+            return response()->json($user, 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }
