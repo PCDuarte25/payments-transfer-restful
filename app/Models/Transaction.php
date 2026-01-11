@@ -9,9 +9,11 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'payer_id',
-        'payee_id',
+        'recipient_id',
         'amount',
         'created_at',
     ];
