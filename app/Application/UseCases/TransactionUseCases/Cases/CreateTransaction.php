@@ -2,6 +2,7 @@
 
 namespace App\Application\UseCases\TransactionUseCases\Cases;
 
+use App\Events\TransactionCompleted;
 use App\Models\User;
 use App\Persistence\Interfaces\RepositoryManagerInterface;
 use App\Services\TransactionAuthorizationService;
@@ -50,6 +51,12 @@ class CreateTransaction
             $this->repositoryManager->rollBackTransaction();
             throw new \Exception("Erro ao criar transação: " . $e->getMessage(), 500);
         }
+
+        event(new TransactionCompleted(
+            $transaction->id,
+            $recipient->id,
+            $transaction->amount
+        ));
 
         $payerFund = $fundsRepository->getFundByUserId($payer->id);
         $recipientFund = $fundsRepository->getFundByUserId($recipient->id);
