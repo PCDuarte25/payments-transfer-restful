@@ -11,4 +11,5 @@ interface UsersRepositoryInterface
     public function getFromId(string $id): ?User;
     public function create(array $data): ?User;
     public function update(User $user, array $data): ?User;
+    public function delete(string $id): void;
 }

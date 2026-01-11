@@ -33,5 +33,10 @@ class UsersRepository implements UsersRepositoryInterface
         $user->save();
         return $user;
     }
+
+    public function delete(string $id): void
+    {
+        User::where('id', $id)->delete();
+    }
 }
 

@@ -42,4 +42,16 @@ class UsersController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    public function deleteUser(string $id)
+    {
+        try {
+            $this->userUseCase->deleteUser($id);
+
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
 }
