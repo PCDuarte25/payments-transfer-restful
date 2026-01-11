@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Implementation;
 
+use App\Persistence\Implementation\Repositories\FundsRepository;
 use App\Persistence\Implementation\Repositories\UsersRepository;
 use App\Persistence\Interfaces\RepositoryManagerInterface;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,11 @@ class RepositoryManager implements RepositoryManagerInterface
     public function getUsersRepository(): UsersRepository
     {
         return new UsersRepository();
+    }
+
+    public function getFundsRepository(): FundsRepository
+    {
+        return new FundsRepository();
     }
 
     public function beginTransaction(): void
