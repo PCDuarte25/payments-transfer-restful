@@ -41,6 +41,16 @@ class User extends Model
 
     public function wallet()
     {
-        return $this->hasOne(Funds::class);
+        return $this->hasOne(Fund::class);
+    }
+
+    public function transactionsSent()
+    {
+        return $this->hasMany(Transaction::class, 'payer_id');
+    }
+
+    public function transactionsReceived()
+    {
+        return $this->hasMany(Transaction::class, 'recipient_id');
     }
 }
