@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 // This is the API route file for the application.
 
+// Auth routes.
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
 // Users routes.
 Route::prefix('v1')->group(function () {
     Route::post('/users', [UsersController::class, 'createNewUser']);
