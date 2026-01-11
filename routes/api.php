@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\v1\TransactionController;
 use App\Http\Controllers\api\v1\UsersController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-// Users routes.
 Route::prefix('v1')->group(function () {
+    // Users routes.
     Route::post('/users', [UsersController::class, 'createNewUser']);
     Route::put('/users/{user_id}', [UsersController::class, 'updateUser'])->middleware('auth:sanctum');
     Route::delete('/users/{user_id}', [UsersController::class, 'deleteUser'])->middleware('auth:sanctum');
+
+    // Transactions routes.
+    Route::post('/transactions', [TransactionController::class, 'createTransaction'])->middleware('auth:sanctum');
 });
