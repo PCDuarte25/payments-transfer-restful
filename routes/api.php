@@ -24,7 +24,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 // Users routes.
 Route::prefix('v1')->group(function () {
     Route::post('/users', [UsersController::class, 'createNewUser']);
-    Route::put('/users/{user_id}', [UsersController::class, 'updateUser']);
-    Route::delete('/users/{user_id}', [UsersController::class, 'deleteUser']);
+    Route::put('/users/{user_id}', [UsersController::class, 'updateUser'])->middleware('auth:sanctum');
+    Route::delete('/users/{user_id}', [UsersController::class, 'deleteUser'])->middleware('auth:sanctum');
 });
-
