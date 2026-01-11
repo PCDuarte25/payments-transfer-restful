@@ -33,12 +33,12 @@ class User extends Authenticatable
 
     public function isCommon(): bool
     {
-        return $this->user_type === 'common';
+        return $this->user_type === UserType::COMMON;
     }
 
     public function isMerchant(): bool
     {
-        return $this->user_type === 'merchant';
+        return $this->user_type === UserType::MERCHANT;
     }
 
     public function wallet()
