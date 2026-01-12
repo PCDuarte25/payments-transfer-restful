@@ -71,7 +71,7 @@ class CreateTransaction
         ];
     }
 
-    private function validateUsers(User $payer, User $recipient, int $amount): void
+    private function validateUsers(?User $payer, User $recipient, int $amount): void
     {
         if (!$payer) {
             throw new Exception("Usuário pagador não encontrado.", 404);
