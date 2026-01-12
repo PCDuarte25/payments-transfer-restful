@@ -105,7 +105,7 @@ A API estará disponível em `http://localhost:9000` e todas as requisições pa
 }
 ```
 
-Após isso sera criado um evento de pagamento concluído, e o listener irá capturar e enviar para a fila, que por fir irá rodar assíncronamente o pedido e emitir a notificação para o usuário que recebeu a transação.
+Após isso sera criado um evento de pagamento concluído, e o listener irá capturar e enviar para a fila, que por fim irá rodar assíncronamente o pedido e emitir a notificação para o usuário que recebeu a transação.
 
 ### Testes unitários
 * Para rodar os testes unitários execute o comando:
