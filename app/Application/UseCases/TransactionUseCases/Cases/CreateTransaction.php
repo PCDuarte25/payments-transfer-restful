@@ -114,11 +114,11 @@ class CreateTransaction
      *
      * @param User|null $payer The user sending the funds.
      * @param User|null $recipient The user receiving the funds.
-     * @param int $amount The transaction value in cents.
+     * @param float $amount The transaction value.
      * @return void
      * @throws Exception If any business rule is violated.
      */
-    private function validateUsers(?User $payer, User $recipient, int $amount): void
+    private function validateUsers(?User $payer, User $recipient, float $amount): void
     {
         if (!$payer) {
             throw new Exception("Usuário pagador não encontrado.", 404);
