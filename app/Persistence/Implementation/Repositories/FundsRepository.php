@@ -3,6 +3,7 @@
 namespace App\Persistence\Implementation\Repositories;
 
 use App\Models\Fund;
+use App\Persistence\Implementation\RepositoryManager;
 use App\Persistence\Interfaces\Repositories\FundsRepositoryInterface;
 
 /**
@@ -13,7 +14,7 @@ use App\Persistence\Interfaces\Repositories\FundsRepositoryInterface;
  *
  * @package App\Persistence\Implementation\Repositories
  */
-class FundsRepository implements FundsRepositoryInterface
+class FundsRepository extends RepositoryManager implements FundsRepositoryInterface
 {
     /**
      * {@inheritDoc}

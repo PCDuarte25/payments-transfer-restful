@@ -3,6 +3,7 @@
 namespace App\Persistence\Interfaces\Repositories;
 
 use App\Models\User;
+use App\Persistence\Interfaces\RepositoryManagerInterface;
 
 /**
  * Interface UsersRepositoryInterface
@@ -13,7 +14,7 @@ use App\Models\User;
  *
  * @package App\Persistence\Interfaces\Repositories
  */
-interface UsersRepositoryInterface
+interface UsersRepositoryInterface extends RepositoryManagerInterface
 {
     /**
      * Retrieve a user by their unique document (CPF/CNPJ).

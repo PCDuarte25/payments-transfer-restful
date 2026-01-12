@@ -3,6 +3,7 @@
 namespace App\Persistence\Implementation\Repositories;
 
 use App\Models\Transaction;
+use App\Persistence\Implementation\RepositoryManager;
 use App\Persistence\Interfaces\Repositories\TransactionsRepositoryInterface;
 
 /**
@@ -13,7 +14,7 @@ use App\Persistence\Interfaces\Repositories\TransactionsRepositoryInterface;
  *
  * @package App\Persistence\Implementation\Repositories
  */
-class TransactionsRepository implements TransactionsRepositoryInterface
+class TransactionsRepository extends RepositoryManager implements TransactionsRepositoryInterface
 {
     /**
      * {@inheritDoc}

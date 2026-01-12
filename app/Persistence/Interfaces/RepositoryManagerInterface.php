@@ -18,27 +18,6 @@ use App\Persistence\Implementation\Repositories\UsersRepository;
 interface RepositoryManagerInterface
 {
     /**
-     * Retrieves the instance of the Users repository.
-     *
-     * @return UsersRepository
-     */
-    public function getUsersRepository(): UsersRepository;
-
-    /**
-     * Retrieves the instance of the Funds (Wallet) repository.
-     *
-     * @return FundsRepository
-     */
-    public function getFundsRepository(): FundsRepository;
-
-    /**
-     * Retrieves the instance of the Transactions repository.
-     *
-     * @return TransactionsRepository
-     */
-    public function getTransactionsRepository(): TransactionsRepository;
-
-    /**
      * Starts a new database transaction.
      *
      * Use this before performing multiple related write operations

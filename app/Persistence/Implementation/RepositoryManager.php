@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
  *
  * @package App\Persistence\Implementation
  */
-class RepositoryManager implements RepositoryManagerInterface
+abstract class RepositoryManager implements RepositoryManagerInterface
 {
     /**
      * The active database connection instance.
@@ -33,30 +33,6 @@ class RepositoryManager implements RepositoryManagerInterface
     public function __construct()
     {
         $this->dbConnection = DB::connection();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getUsersRepository(): UsersRepository
-    {
-        return new UsersRepository();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getFundsRepository(): FundsRepository
-    {
-        return new FundsRepository();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getTransactionsRepository(): TransactionsRepository
-    {
-        return new TransactionsRepository();
     }
 
     /**

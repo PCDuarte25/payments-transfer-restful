@@ -3,6 +3,7 @@
 namespace App\Persistence\Interfaces\Repositories;
 
 use App\Models\Transaction;
+use App\Persistence\Interfaces\RepositoryManagerInterface;
 
 /**
  * Interface TransactionsRepositoryInterface
@@ -12,7 +13,7 @@ use App\Models\Transaction;
  *
  * @package App\Persistence\Interfaces\Repositories
  */
-interface TransactionsRepositoryInterface
+interface TransactionsRepositoryInterface extends RepositoryManagerInterface
 {
     /**
      * Persists a new transaction record in the database.

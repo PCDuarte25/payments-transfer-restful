@@ -2,7 +2,8 @@
 
 namespace App\Application\UseCases\UserUseCases\Cases;
 
-use App\Persistence\Interfaces\RepositoryManagerInterface;
+use App\Persistence\Interfaces\Repositories\FundsRepositoryInterface;
+use App\Persistence\Interfaces\Repositories\UsersRepositoryInterface;
 use Exception;
 
 /**
@@ -16,22 +17,11 @@ use Exception;
  */
 class DeleteUser
 {
-    /**
-     * Manager for database repositories and transaction control.
-     *
-     * @var RepositoryManagerInterface
-     */
-    private RepositoryManagerInterface $repositoryManager;
-
-    /**
-     * DeleteUser constructor.
-     *
-     * @param RepositoryManagerInterface $repositoryManager
-     */
-    public function __construct(RepositoryManagerInterface $repositoryManager)
-    {
-        $this->repositoryManager = $repositoryManager;
-    }
+    public function __construct(
+        private UsersRepositoryInterface $usersRepository,
+        private FundsRepositoryInterface $fundsRepository,
+    )
+    {}
 
     /**
      * Executes the user and associated funds deletion.
@@ -42,28 +32,25 @@ class DeleteUser
      */
     public function execute(string $userId): void
     {
-        $usersRepository = $this->repositoryManager->getUsersRepository();
-        $fundsRepository = $this->repositoryManager->getFundsRepository();
-
         // Verify existence
-        $user = $usersRepository->getFromId($userId);
+        $user = $this->usersRepository->getFromId($userId);
         if (!$user) {
             throw new Exception("Usuário não encontrado.", 404);
         }
 
         try {
-            $this->repositoryManager->beginTransaction();
+            $this->usersRepository->beginTransaction();
 
             // Soft Delete User
-            $usersRepository->delete($userId);
+            $this->usersRepository->delete($userId);
 
             // Soft Delete Related Funds
-            $fundsRepository->deleteByUserId($userId);
+            $this->fundsRepository->deleteByUserId($userId);
 
-            $this->repositoryManager->commitTransaction();
+            $this->usersRepository->commitTransaction();
         } catch (Exception $e) {
             // Rollback on Failure
-            $this->repositoryManager->rollbackTransaction();
+            $this->usersRepository->rollbackTransaction();
             throw new Exception("Erro ao deletar usuário: " . $e->getMessage(), 500);
         }
     }

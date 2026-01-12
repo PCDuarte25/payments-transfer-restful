@@ -4,7 +4,9 @@ namespace App\Application\UseCases\TransactionUseCases\Cases;
 
 use App\Events\TransactionCompleted;
 use App\Models\User;
-use App\Persistence\Interfaces\RepositoryManagerInterface;
+use App\Persistence\Interfaces\Repositories\FundsRepositoryInterface;
+use App\Persistence\Interfaces\Repositories\TransactionsRepositoryInterface;
+use App\Persistence\Interfaces\Repositories\UsersRepositoryInterface;
 use App\Services\TransactionAuthorizationService;
 use Exception;
 
@@ -19,34 +21,14 @@ use Exception;
  */
 class CreateTransaction
 {
-    /**
-     * Manager for database repositories and transaction control.
-     *
-     * @var RepositoryManagerInterface
-     */
-    private RepositoryManagerInterface $repositoryManager;
 
-    /**
-     * Service used to authorize the transaction via external provider.
-     *
-     * @var TransactionAuthorizationService
-     */
-    private TransactionAuthorizationService $authorizationService;
-
-    /**
-     * CreateTransaction constructor.
-     *
-     * @param RepositoryManagerInterface $repositoryManager
-     * @param TransactionAuthorizationService $authorizationService
-     */
     public function __construct(
-        RepositoryManagerInterface $repositoryManager,
-        TransactionAuthorizationService $authorizationService
+        private UsersRepositoryInterface $usersRepository,
+        private TransactionsRepositoryInterface $transactionsRepository,
+        private FundsRepositoryInterface $fundsRepository,
+        private TransactionAuthorizationService $authorizationService
     )
-    {
-        $this->authorizationService = $authorizationService;
-        $this->repositoryManager = $repositoryManager;
-    }
+    {}
 
     /**
      * Executes the transaction process.
@@ -57,12 +39,8 @@ class CreateTransaction
      */
     public function execute(array $data): array
     {
-        $usersRepository = $this->repositoryManager->getUsersRepository();
-        $transactionsRepository = $this->repositoryManager->getTransactionsRepository();
-        $fundsRepository = $this->repositoryManager->getFundsRepository();
-
-        $payer = $usersRepository->getFromId($data['payer_id']);
-        $recipient = $usersRepository->getFromId($data['recipient_id']);
+        $payer = $this->usersRepository->getFromId($data['payer_id']);
+        $recipient = $this->usersRepository->getFromId($data['recipient_id']);
 
         // Validate business rules
         $this->validateUsers($payer, $recipient, $data['amount']);
@@ -74,8 +52,8 @@ class CreateTransaction
 
         try {
             // Create transaction record
-            $this->repositoryManager->beginTransaction();
-            $transaction = $transactionsRepository->create([
+            $this->transactionsRepository->beginTransaction();
+            $transaction = $this->transactionsRepository->create([
                 'payer_id' => $payer->id,
                 'recipient_id' => $recipient->id,
                 'amount' => $data['amount'],
@@ -84,9 +62,9 @@ class CreateTransaction
             // Update balances
             $this->updateFunds($payer, $recipient, $data['amount']);
 
-            $this->repositoryManager->commitTransaction();
+            $this->transactionsRepository->commitTransaction();
         } catch (Exception $e) {
-            $this->repositoryManager->rollBackTransaction();
+            $this->transactionsRepository->rollBackTransaction();
             throw new Exception("Erro ao criar transação: " . $e->getMessage(), 500);
         }
 
@@ -97,8 +75,8 @@ class CreateTransaction
             $transaction->amount
         ));
 
-        $payerFund = $fundsRepository->getFundByUserId($payer->id);
-        $recipientFund = $fundsRepository->getFundByUserId($recipient->id);
+        $payerFund = $this->fundsRepository->getFundByUserId($payer->id);
+        $recipientFund = $this->fundsRepository->getFundByUserId($recipient->id);
         return [
             'transaction_id' => $transaction->id,
             'payer_id' => $transaction->payer_id,
@@ -136,7 +114,7 @@ class CreateTransaction
             throw new Exception("O pagador e o recebedor não podem ser o mesmo usuário.", 400);
         }
 
-        $payerFund = $this->repositoryManager->getFundsRepository()->getFundByUserId($payer->id);
+        $payerFund = $this->fundsRepository->getFundByUserId($payer->id);
         if ($payerFund->balance < $amount) {
             throw new Exception("Saldo insuficiente para realizar a transação.", 400);
         }
@@ -152,7 +130,7 @@ class CreateTransaction
      */
     private function updateFunds(User $payer, User $recipient, int $amount): void
     {
-        $fundsRepository = $this->repositoryManager->getFundsRepository();
+        $fundsRepository = $this->fundsRepository;
 
         $payerFund = $fundsRepository->getFundByUserId($payer->id);
         $fundsRepository->updateFundByUserId($payer->id, [

@@ -2,7 +2,8 @@
 
 namespace App\Application\UseCases\UserUseCases\Cases;
 
-use App\Persistence\Interfaces\RepositoryManagerInterface;
+use App\Persistence\Interfaces\Repositories\FundsRepositoryInterface;
+use App\Persistence\Interfaces\Repositories\UsersRepositoryInterface;
 use Exception;
 
 /**
@@ -16,22 +17,11 @@ use Exception;
  */
 class CreateUser
 {
-    /**
-     * The repository manager providing access to user and fund persistence.
-     *
-     * @var RepositoryManagerInterface
-     */
-    private RepositoryManagerInterface $repositoryManager;
-
-    /**
-     * CreateUser constructor.
-     *
-     * @param RepositoryManagerInterface $repositoryManager
-     */
-    public function __construct(RepositoryManagerInterface $repositoryManager)
-    {
-        $this->repositoryManager = $repositoryManager;
-    }
+    public function __construct(
+        private UsersRepositoryInterface $usersRepository,
+        private FundsRepositoryInterface $fundsRepository,
+    )
+    {}
 
     /**
      * Executes the user creation process.
@@ -46,32 +36,29 @@ class CreateUser
         $password = password_hash($data['password'], PASSWORD_BCRYPT);
         $data['password'] = $password;
 
-        $usersRepository = $this->repositoryManager->getUsersRepository();
-        $fundsRepository = $this->repositoryManager->getFundsRepository();
-
         // Validate Uniqueness
-        if ($usersRepository->getFromDocument($data['document'])) {
+        if ($this->usersRepository->getFromDocument($data['document'])) {
             throw new Exception("Usuário com este documento já existe.", 400);
         }
 
-        if ($usersRepository->getFromEmail($data['email'])) {
+        if ($this->usersRepository->getFromEmail($data['email'])) {
             throw new Exception("Usuário com este email já existe.", 400);
         }
 
         try {
-            $this->repositoryManager->beginTransaction();
+            $this->usersRepository->beginTransaction();
 
             // Persist User
-            $user = $usersRepository->create($data);
+            $user = $this->usersRepository->create($data);
 
             // Initialize User Funds (Wallet)
-            $fundsRepository->create(['user_id' => $user->id]);
+            $this->fundsRepository->create(['user_id' => $user->id]);
 
-            $this->repositoryManager->commitTransaction();
+            $this->usersRepository->commitTransaction();
 
             return $user->toArray();
         } catch (Exception $e) {
-            $this->repositoryManager->rollBackTransaction();
+            $this->usersRepository->rollBackTransaction();
             throw new Exception("Erro ao criar usuário: " . $e->getMessage(), 500);
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Persistence\Implementation\Repositories;
 
 use App\Models\User;
+use App\Persistence\Implementation\RepositoryManager;
 use App\Persistence\Interfaces\Repositories\UsersRepositoryInterface;
 
 /**
@@ -13,7 +14,7 @@ use App\Persistence\Interfaces\Repositories\UsersRepositoryInterface;
  *
  * @package App\Persistence\Implementation\Repositories
  */
-class UsersRepository implements UsersRepositoryInterface
+class UsersRepository extends RepositoryManager implements UsersRepositoryInterface
 {
     /**
      * {@inheritDoc}

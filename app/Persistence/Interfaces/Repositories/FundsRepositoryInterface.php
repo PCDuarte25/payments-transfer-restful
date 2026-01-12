@@ -3,6 +3,7 @@
 namespace App\Persistence\Interfaces\Repositories;
 
 use App\Models\Fund;
+use App\Persistence\Interfaces\RepositoryManagerInterface;
 
 /**
  * Interface FundsRepositoryInterface
@@ -12,7 +13,7 @@ use App\Models\Fund;
  *
  * @package App\Persistence\Interfaces\Repositories
  */
-interface FundsRepositoryInterface
+interface FundsRepositoryInterface extends RepositoryManagerInterface
 {
     /**
      * Creates a new fund record for a user.
