@@ -5,6 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class UserRequest
+ *
+ * Handles the validation of user profile data.
+ * This request ensures that all necessary identity information is provided
+ * and formatted correctly before a user is persisted or updated.
+ *
+ * @package App\Http\Requests
+ */
 class UserRequest extends FormRequest
 {
     /**
@@ -22,7 +31,8 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'full_name' => ['required', 'string', 'max:255'],
             'email'     => ['required', 'email'],
@@ -36,6 +46,11 @@ class UserRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the custom error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

@@ -5,6 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class TransactionRequest
+ *
+ * Handles the validation of financial transaction payloads.
+ * Ensures the existence of participants and the validity of the transfer amount.
+ *
+ * @package App\Http\Requests
+ */
 class TransactionRequest extends FormRequest
 {
     /**
@@ -22,7 +30,8 @@ class TransactionRequest extends FormRequest
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'payer_id' => [
                 'required',
@@ -46,6 +55,11 @@ class TransactionRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the custom error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

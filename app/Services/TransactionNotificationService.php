@@ -5,28 +5,46 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class TransactionNotificationService
+ *
+ * Handles communication with external notification providers to alert users
+ * about transaction events.
+ *
+ * @package App\Services
+ */
 class TransactionNotificationService
 {
+    /**
+     * Sends a notification to a specific user regarding a transaction.
+     *
+     * @param int $userId The unique identifier of the user to be notified.
+     * @param int $amount The transaction amount involved (usually in cents).
+     * @return void
+     */
     public function notify(int $userId, int $amount): void
     {
-        // Aqui eu usaria o $userId e o $amount para pegar as infos do usuário
-        // e mandar no e-mail com algum serviço externo como mailHog por exemplo.
-        $response = Http::post('https://util.devi.tools/api/v1/notify');
+        $response = Http::post('https://util.devi.tools/api/v1/notify', [
+            'user_id' => $userId,
+            'amount'  => $amount,
+            'message' => "Você recebeu uma transferência de {$amount}."
+        ]);
 
         if ($response->failed()) {
-            Log::warning('Falha ao enviar notificação', [
-                'service' => 'transaction_notification',
+            Log::error('Failed to send transaction notification', [
+                'service'  => 'transaction_notification',
+                'user_id'  => $userId,
+                'status'   => $response->status(),
                 'response' => $response->body(),
             ]);
 
             return;
         }
 
-        Log::warning('Sucesso ao enviar notificação', [
-            'service' => 'transaction_notification',
-            'response' => $response->body(),
+        Log::info('Notification sent successfully', [
+            'service'  => 'transaction_notification',
+            'user_id'  => $userId,
+            'response' => $response->json(),
         ]);
-
-        return;
     }
 }

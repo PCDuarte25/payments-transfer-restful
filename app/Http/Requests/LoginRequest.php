@@ -4,6 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class LoginRequest
+ *
+ * Handles the validation logic for user authentication requests.
+ * It ensures that the required credentials are provided in the correct format.
+ *
+ * @package App\Http\Requests
+ */
 class LoginRequest extends FormRequest
 {
     /**
@@ -19,15 +27,21 @@ class LoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, array<int, mixed>>
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'email'    => ['required', 'email'],
             'password' => ['required', 'string', 'min:6'],
         ];
     }
 
+    /**
+     * Get the custom error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
     public function messages()
     {
         return [

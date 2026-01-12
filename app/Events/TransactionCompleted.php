@@ -2,14 +2,19 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class TransactionCompleted
+ *
+ * This event is dispatched immediately after a transaction has been
+ * successfully processed and committed to the database.
+ *
+ * @package App\Events
+ */
 class TransactionCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
