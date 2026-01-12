@@ -26,11 +26,11 @@ class UserUseCase
         return $this->createUser->execute($data);
     }
 
-    public function updateUser(string $id, array $data): array {
-        return $this->updateUser->execute($id, $data);
+    public function updateUser(string $userId, array $data): array {
+        return $this->updateUser->execute($userId, $data);
     }
 
-    public function deleteUser(string $id): void {
-        $this->deleteUser->execute($id);
+    public function deleteUser(string $userId): void {
+        $this->deleteUser->execute($userId);
     }
 }

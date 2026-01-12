@@ -21,13 +21,12 @@ class TransactionNotificationService
 
             return;
         }
-        else {
-            Log::warning('Sucesso ao enviar notificação', [
-                'service' => 'transaction_notification',
-                'response' => $response->body(),
-            ]);
 
-            return;
-        }
+        Log::warning('Sucesso ao enviar notificação', [
+            'service' => 'transaction_notification',
+            'response' => $response->body(),
+        ]);
+
+        return;
     }
 }

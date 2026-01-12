@@ -29,12 +29,12 @@ class UsersController extends Controller
         }
     }
 
-    public function updateUser(string $id, UserRequest $request)
+    public function updateUser(string $userId, UserRequest $request)
     {
         try {
             $data = $request->validated();
 
-            $user = $this->userUseCase->updateUser($id, $data);
+            $user = $this->userUseCase->updateUser($userId, $data);
 
             return response()->json($user, 200);
         }
@@ -43,10 +43,10 @@ class UsersController extends Controller
         }
     }
 
-    public function deleteUser(string $id)
+    public function deleteUser(string $userId)
     {
         try {
-            $this->userUseCase->deleteUser($id);
+            $this->userUseCase->deleteUser($userId);
 
             return response()->json(['message' => 'Usuário removido com sucesso'], 200);
         }

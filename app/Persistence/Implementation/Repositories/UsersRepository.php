@@ -17,9 +17,9 @@ class UsersRepository implements UsersRepositoryInterface
         return User::where('email', $email)->first();
     }
 
-    public function getFromId(string $id): ?User
+    public function getFromId(string $userId): ?User
     {
-        return User::where('id', $id)->first();
+        return User::where('id', $userId)->first();
     }
 
     public function create(array $data): ?User
@@ -34,9 +34,9 @@ class UsersRepository implements UsersRepositoryInterface
         return $user;
     }
 
-    public function delete(string $id): void
+    public function delete(string $userId): void
     {
-        User::where('id', $id)->delete();
+        User::where('id', $userId)->delete();
     }
 }
 
