@@ -16,6 +16,11 @@ use Exception;
  */
 class UpdateUser
 {
+    /**
+     * Create a new update user use case instance.
+     *
+     * @param UsersRepositoryInterface $usersRepository Handles user data retrieval and persistence.
+     */
     public function __construct(
         private UsersRepositoryInterface $usersRepository
     )

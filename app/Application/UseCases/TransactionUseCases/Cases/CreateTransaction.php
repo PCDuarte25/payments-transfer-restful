@@ -21,7 +21,14 @@ use Exception;
  */
 class CreateTransaction
 {
-
+    /**
+     * Create a new transaction use case instance.
+     *
+     * @param UsersRepositoryInterface $usersRepository Handles user data retrieval and persistence.
+     * @param TransactionsRepositoryInterface $transactionsRepository Manages the immutable ledger of transfers.
+     * @param FundsRepositoryInterface $fundsRepository Manages financial balances and wallet updates.
+     * @param TransactionAuthorizationService $authorizationService Integration with external anti-fraud/approval APIs.
+     */
     public function __construct(
         private UsersRepositoryInterface $usersRepository,
         private TransactionsRepositoryInterface $transactionsRepository,

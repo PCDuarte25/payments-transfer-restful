@@ -17,6 +17,12 @@ use Exception;
  */
 class DeleteUser
 {
+    /**
+     * Create a new delete user use case instance.
+     *
+     * @param UsersRepositoryInterface $usersRepository Handles user data retrieval and persistence.
+     * @param FundsRepositoryInterface $fundsRepository Manages financial balances and wallet updates.
+     */
     public function __construct(
         private UsersRepositoryInterface $usersRepository,
         private FundsRepositoryInterface $fundsRepository,
