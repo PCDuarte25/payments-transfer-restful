@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Persistence\Implementation\Repositories\FundsRepository;
 use App\Persistence\Implementation\Repositories\TransactionsRepository;
 use App\Persistence\Implementation\Repositories\UsersRepository;
-use App\Persistence\Interfaces\RepositoryManagerInterface;
 use App\Services\TransactionAuthorizationService;
 use Exception;
 use Illuminate\Support\Facades\Event;
@@ -28,10 +27,6 @@ use Tests\TestCase;
  */
 class CreateTransactionTest extends TestCase
 {
-    private $repositoryManager;
-    private $authorizationService;
-    private $useCase;
-
     /**
      * Sets up the test environment by initializing mocks and the use case.
      *
@@ -41,26 +36,22 @@ class CreateTransactionTest extends TestCase
     {
         parent::setUp();
 
-        // 1. Initialize Mocks
-        $this->repositoryManager = Mockery::mock(RepositoryManagerInterface::class);
-        $this->authorizationService = Mockery::mock(TransactionAuthorizationService::class);
+        // Initialize Mocks
         $this->usersRepository = Mockery::mock(UsersRepository::class);
         $this->transactionsRepository = Mockery::mock(TransactionsRepository::class);
         $this->fundsRepository = Mockery::mock(FundsRepository::class);
+        $this->authorizationService = Mockery::mock(TransactionAuthorizationService::class);
         $this->payer = Mockery::mock(User::class);
         $this->recipient = Mockery::mock(User::class);
         $this->fund = Mockery::mock(Fund::class);
         $this->transaction = Mockery::mock(Transaction::class);
 
-        // 2. Configure Repository Manager Mock
-        $this->repositoryManager
-            ->shouldReceive('getUsersRepository')->andReturn($this->usersRepository)
-            ->shouldReceive('getTransactionsRepository')->andReturn($this->transactionsRepository)
-            ->shouldReceive('getFundsRepository')->andReturn($this->fundsRepository);
 
-        // 3. Instantiate Use Case
+        // Instantiate Use Case
         $this->useCase = new CreateTransaction(
-            $this->repositoryManager,
+            $this->usersRepository,
+            $this->transactionsRepository,
+            $this->fundsRepository,
             $this->authorizationService
         );
     }
@@ -178,8 +169,8 @@ class CreateTransactionTest extends TestCase
         $this->payer->shouldReceive('isMerchant')->andReturn(false);
         $this->recipient->shouldReceive('getAttribute')->with('id')->andReturn(2);
 
-        $this->repositoryManager->shouldReceive('beginTransaction')->once();
-        $this->repositoryManager->shouldReceive('commitTransaction')->once();
+        $this->transactionsRepository->shouldReceive('beginTransaction')->once();
+        $this->transactionsRepository->shouldReceive('commitTransaction')->once();
 
         $this->usersRepository->shouldReceive('getFromId')->with(1)->andReturn($this->payer);
         $this->usersRepository->shouldReceive('getFromId')->with(2)->andReturn($this->recipient);
