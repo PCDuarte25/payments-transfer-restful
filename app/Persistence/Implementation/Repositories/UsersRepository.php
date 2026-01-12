@@ -19,7 +19,7 @@ class UsersRepository extends RepositoryManager implements UsersRepositoryInterf
     /**
      * {@inheritDoc}
      */
-    public function getFromDocument(string $document): ?User
+    public function getByDocument(string $document): ?User
     {
         return User::where('document', $document)->first();
     }
@@ -27,7 +27,7 @@ class UsersRepository extends RepositoryManager implements UsersRepositoryInterf
     /**
      * {@inheritDoc}
      */
-    public function getFromEmail(string $email): ?User
+    public function getByEmail(string $email): ?User
     {
         return User::where('email', $email)->first();
     }
@@ -35,7 +35,7 @@ class UsersRepository extends RepositoryManager implements UsersRepositoryInterf
     /**
      * {@inheritDoc}
      */
-    public function getFromId(string $userId): ?User
+    public function getById(string $userId): ?User
     {
         return User::where('id', $userId)->first();
     }

@@ -46,8 +46,8 @@ class CreateTransaction
      */
     public function execute(array $data): array
     {
-        $payer = $this->usersRepository->getFromId($data['payer_id']);
-        $recipient = $this->usersRepository->getFromId($data['recipient_id']);
+        $payer = $this->usersRepository->getById($data['payer_id']);
+        $recipient = $this->usersRepository->getById($data['recipient_id']);
 
         // Validate business rules
         $this->validateUsers($payer, $recipient, $data['amount']);

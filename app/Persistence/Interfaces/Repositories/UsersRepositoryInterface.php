@@ -22,7 +22,7 @@ interface UsersRepositoryInterface extends RepositoryManagerInterface
      * @param string $document The document string to search for.
      * @return User|null
      */
-    public function getFromDocument(string $document): ?User;
+    public function getByDocument(string $document): ?User;
 
     /**
      * Retrieve a user by their unique email address.
@@ -30,7 +30,7 @@ interface UsersRepositoryInterface extends RepositoryManagerInterface
      * @param string $email The email address to search for.
      * @return User|null
      */
-    public function getFromEmail(string $email): ?User;
+    public function getByEmail(string $email): ?User;
 
     /**
      * Retrieve a user by their primary unique identifier (ID).
@@ -38,7 +38,7 @@ interface UsersRepositoryInterface extends RepositoryManagerInterface
      * @param string $userId The UUID or primary key of the user.
      * @return User|null
      */
-    public function getFromId(string $userId): ?User;
+    public function getById(string $userId): ?User;
 
     /**
      * Persist a new user record in the database.

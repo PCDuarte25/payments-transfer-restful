@@ -75,13 +75,13 @@ class CreateTransactionTest extends TestCase
     public function test_should_throw_exception_when_payer_not_found(): void
     {
         $this->usersRepository
-            ->shouldReceive('getFromId')
+            ->shouldReceive('getById')
             ->with(1)
             ->andReturn(null)
             ->once();
 
         $this->usersRepository
-            ->shouldReceive('getFromId')
+            ->shouldReceive('getById')
             ->with(2)
             ->andReturn($this->payer)
             ->once();
@@ -107,8 +107,8 @@ class CreateTransactionTest extends TestCase
         $this->payer->shouldReceive('isMerchant')->andReturn(false);
         $this->recipient->shouldReceive('getAttribute')->with('id')->andReturn(2);
 
-        $this->usersRepository->shouldReceive('getFromId')->with(1)->andReturn($this->payer);
-        $this->usersRepository->shouldReceive('getFromId')->with(2)->andReturn($this->recipient);
+        $this->usersRepository->shouldReceive('getById')->with(1)->andReturn($this->payer);
+        $this->usersRepository->shouldReceive('getById')->with(2)->andReturn($this->recipient);
 
         $this->fund->shouldReceive('setAttribute')->with('balance')->andReturn(50);
         $this->fund->shouldReceive('getAttribute')->with('balance')->andReturn(50);
@@ -136,8 +136,8 @@ class CreateTransactionTest extends TestCase
         $this->payer->shouldReceive('isMerchant')->andReturn(false);
         $this->recipient->shouldReceive('getAttribute')->with('id')->andReturn(2);
 
-        $this->usersRepository->shouldReceive('getFromId')->with(1)->andReturn($this->payer);
-        $this->usersRepository->shouldReceive('getFromId')->with(2)->andReturn($this->recipient);
+        $this->usersRepository->shouldReceive('getById')->with(1)->andReturn($this->payer);
+        $this->usersRepository->shouldReceive('getById')->with(2)->andReturn($this->recipient);
 
         $this->fundsRepository->shouldReceive('getFundByUserId')->with(1)->andReturn($this->fund);
 
@@ -172,8 +172,8 @@ class CreateTransactionTest extends TestCase
         $this->transactionsRepository->shouldReceive('beginTransaction')->once();
         $this->transactionsRepository->shouldReceive('commitTransaction')->once();
 
-        $this->usersRepository->shouldReceive('getFromId')->with(1)->andReturn($this->payer);
-        $this->usersRepository->shouldReceive('getFromId')->with(2)->andReturn($this->recipient);
+        $this->usersRepository->shouldReceive('getById')->with(1)->andReturn($this->payer);
+        $this->usersRepository->shouldReceive('getById')->with(2)->andReturn($this->recipient);
 
         $this->fundsRepository->shouldReceive('getFundByUserId')->with(1)->andReturn($this->fund);
         $this->fundsRepository->shouldReceive('getFundByUserId')->with(2)->andReturn($this->fund);

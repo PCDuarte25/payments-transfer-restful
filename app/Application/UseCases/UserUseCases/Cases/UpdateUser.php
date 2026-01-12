@@ -37,20 +37,20 @@ class UpdateUser
     public function execute(string $userId, array $data): array
     {
         // Locate existing user
-        $user = $this->usersRepository->getFromId($userId);
+        $user = $this->usersRepository->getById($userId);
         if (!$user) {
             throw new Exception("Não foi possível encontrar um usuário.", 400);
         }
 
         // Validate Document Uniqueness
         // Only checks if the document is being changed and if the new one exists elsewhere.
-        if ($data['document'] !== $user->document && $this->usersRepository->getFromDocument($data['document'])) {
+        if ($data['document'] !== $user->document && $this->usersRepository->getByDocument($data['document'])) {
             throw new Exception("Usuário com este documento já existe.", 400);
         }
 
         // Validate Email Uniqueness
         // Only checks if the email is being changed and if the new one exists elsewhere.
-        if ($data['email'] !== $user->email && $this->usersRepository->getFromEmail($data['email'])) {
+        if ($data['email'] !== $user->email && $this->usersRepository->getByEmail($data['email'])) {
             throw new Exception("Usuário com este email já existe.", 400);
         }
 

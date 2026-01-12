@@ -43,11 +43,11 @@ class CreateUser
         $data['password'] = $password;
 
         // Validate Uniqueness
-        if ($this->usersRepository->getFromDocument($data['document'])) {
+        if ($this->usersRepository->getByDocument($data['document'])) {
             throw new Exception("Usuário com este documento já existe.", 400);
         }
 
-        if ($this->usersRepository->getFromEmail($data['email'])) {
+        if ($this->usersRepository->getByEmail($data['email'])) {
             throw new Exception("Usuário com este email já existe.", 400);
         }
 

@@ -39,7 +39,7 @@ class DeleteUser
     public function execute(string $userId): void
     {
         // Verify existence
-        $user = $this->usersRepository->getFromId($userId);
+        $user = $this->usersRepository->getById($userId);
         if (!$user) {
             throw new Exception("Usuário não encontrado.", 404);
         }
