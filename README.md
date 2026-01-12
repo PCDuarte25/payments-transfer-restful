@@ -38,8 +38,7 @@
 
 2. **Execute as migrations e as seeders**
    ```bash
-   docker-compose exec web php artisan migrate
-   docker-compose exec web php artisan db:seed --class=DatabaseSeeder
+   docker-compose exec web php artisan migrate --seed
    ```
    ps: Se a migration falhar, espere um pouco antes de rodar, pois o banco pode ainda não ter sido inicializado corretamente.
 
