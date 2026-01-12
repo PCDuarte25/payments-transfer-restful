@@ -5,23 +5,11 @@ services:
     build: .
     ports:
       - "9000:80"
-    volumes:
-      - .:/usr/share/nginx
     networks:
       - laravel
     depends_on:
       - db
-      - mailhog
       - redis
-    environment:
-      - MAIL_MAILER=smtp
-      - MAIL_HOST=mailhog
-      - MAIL_PORT=1025
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=payments
-      - DB_USERNAME=user
-      - DB_PASSWORD=password
 
   db:
     image: mysql
@@ -34,14 +22,6 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
-    networks:
-      - laravel
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
     networks:
       - laravel
 
